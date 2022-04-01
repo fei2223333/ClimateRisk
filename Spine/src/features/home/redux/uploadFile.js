@@ -8,7 +8,7 @@ import {
 } from './constants';
 import Axios from 'axios';
 
-export function uploadFile(formData) {
+export function uploadFile(formData, flag) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
       type: HOME_UPLOAD_FILE_BEGIN,
@@ -23,7 +23,53 @@ export function uploadFile(formData) {
     // })
     //   .then(({ data }) => {
     //     console.log(data);
-        const data = {
+
+        const data = flag?
+        {
+          list:[
+            {
+              version:'A',
+              cluster:'C-1',
+              api:'API-1-1',
+              weight:50,
+              label:1,
+              score:0.97,
+            },
+            {
+              version:'A',
+              cluster:'C-1',
+              api:'API-1-1',
+              weight:50,
+              label:1,
+              score:0.96,
+            },
+            {
+              version:'A',
+              cluster:'C-1',
+              api:'API-1-1',
+              weight:50,
+              label:1,
+              score:0.95,
+            },
+            {
+              version:'A',
+              cluster:'C-1',
+              api:'API-1-1',
+              weight:50,
+              label:1,
+              score:0.92,
+            },
+            {
+              version:'A',
+              cluster:'C-1',
+              api:'API-1-1',
+              weight:50,
+              label:1,
+              score:0.98,
+            },
+          ]
+        }
+        :{
           parsed_log_file_path: "\mnt\logs\\2022-03-23\\test.csv",
           log_statistics:{
             log_amount: 10000,
@@ -45,9 +91,12 @@ export function uploadFile(formData) {
             }
           }
         }
+
+
         dispatch({
             type: HOME_UPLOAD_FILE_SUCCESS,
             data: data,
+            isConan: flag,
           });
       //})
       // .catch(err => {
@@ -96,6 +145,7 @@ export function reducer(state, action) {
   switch (action.type) {
     case HOME_UPLOAD_FILE_BEGIN:
       // Just after a request is sent
+
       return {
         ...state,
         uploadFilePending: true,
@@ -106,7 +156,16 @@ export function reducer(state, action) {
     case HOME_UPLOAD_FILE_SUCCESS:
       // The request is success
       console.log(action.data)
-      return {
+
+      return action.isConan?
+      {
+        ...state,
+        uploadFilePending: false,
+        uploadFileError: null,
+        isUploading: false,
+        conanData: action.data
+      }
+      :{
         ...state,
         uploadFilePending: false,
         uploadFileError: null,

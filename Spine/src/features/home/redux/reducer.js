@@ -1,8 +1,12 @@
 import initialState from './initialState';
 import { reducer as uploadFileReducer } from './uploadFile';
+import { reducer as switchHeaderReducer } from './switchHeader';
+import { reducer as resetUploadReducer } from './resetUpload';
 
 const reducers = [
   uploadFileReducer,
+  switchHeaderReducer,
+  resetUploadReducer,
 ];
 
 export default function reducer(state = initialState, action) {

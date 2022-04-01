@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { Line, Column } from '@ant-design/charts';
-import { Row, Col, Space, Card, Divider,Table } from 'antd';
+import { Row, Col, Space, Card, Divider,Table ,PageHeader} from 'antd';
+import '../../styles/TemplateChart.less';
 
 export class TemplateChart extends Component {
   render() {
@@ -85,9 +86,11 @@ export class TemplateChart extends Component {
     ]
 
     return this.props.data ? (
+      
       <Space direction="vertical" size="middle" style={{ display: 'flex',marginTop: 30 }}>
-        <Card title="Parsing Results" size="big">
-        <Divider orientation="left">Log Statistics</Divider>
+        <span class="header">Parsing Results</span>
+        <Card title="Log Statistics" size="big">
+        <Divider orientation="left"></Divider>
           <Row>
             <Col span={18} push={6}>
               <div class="chart">
@@ -102,9 +105,11 @@ export class TemplateChart extends Component {
               </div>
             </Col>
           </Row>
-          <Divider orientation="left">Log Sample per template</Divider>
+          </Card>
+        <Card title="Log Sample per template">
           <Table columns={columns} dataSource={Object.values(this.props.data.log_sample_results)} />
         </Card>
+        
       </Space>
     ) : null;
   }

@@ -3,33 +3,30 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
-import 'antd/dist/antd.css';
-import TemplateChart from './TemplateChart';
-import UploadComponent from './UploadComponent';
+import {UploadComponent,ConanContent} from '.';
 
-
-export class SpineLayout extends Component {
+export class ConanLayout extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.actions.switchHeader({
-      title:"Spine",
-      subtitle:"An automated and scalable log parser"
-    })
+      title: 'Conan',
+      subtitle: 'Automatic Batch Failure Diagnosis',
+    });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.actions.resetUpload();
   }
 
   render() {
     return (
-      <div className="home-spine-layout">
-              <UploadComponent type="spine"></UploadComponent>
-              <TemplateChart  data={this.props.home.parsedData} />
+      <div className="home-conan-layout">
+        <UploadComponent type="conan"/>
+        <ConanContent data={this.props.home.conanData} />
       </div>
     );
   }
@@ -52,4 +49,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SpineLayout);
+)(ConanLayout);

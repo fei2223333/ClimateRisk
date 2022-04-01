@@ -10,7 +10,7 @@ import '../../styles/SpineContent.less';
 const { Dragger } = Upload;
 
 
-export class SpineContent extends Component {
+export class UploadComponent extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -21,7 +21,10 @@ export class SpineContent extends Component {
       showModal: false,
       fileList: [], //文件列表，用于控制upload组件
     };
+    this.handleUpload = this.handleUpload.bind(this)
   }
+
+
 
   handleFileChange = ({ file, fileList }) => {
     //处理文件change，保证用户选择的文件只有一个
@@ -35,15 +38,16 @@ export class SpineContent extends Component {
     })
   };
 
-  handleUpload = () => {
+  handleUpload() {
     if (!this.state.fileList.length) {
       message.warning('请选择要上传的文件');
+      return;
     }
 
     const formData = new FormData();
     formData.append('file', this.state.fileList[0].originFileObj);
 
-    this.props.actions.uploadFile(formData);
+    this.props.actions.uploadFile(formData, this.props.type === "conan");
   };
 
   render() {
@@ -127,4 +131,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SpineContent);
+)(UploadComponent);

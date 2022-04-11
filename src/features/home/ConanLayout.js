@@ -32,7 +32,6 @@ export class ConanLayout extends Component {
   }
 }
 
-/* istanbul ignore next */
 function mapStateToProps(state) {
   return {
     home: state.home,

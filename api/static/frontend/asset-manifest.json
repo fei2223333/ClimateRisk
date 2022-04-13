@@ -1,0 +1,16 @@
+{
+  "main.css": "static/frontend/css/main.97be736e.chunk.css",
+  "main.js": "static/frontend/js/main.42eca29f.chunk.js",
+  "main.js.map": "static/frontend/js/main.42eca29f.chunk.js.map",
+  "css/1.3e1e514d.chunk.css": "static/frontend/css/1.3e1e514d.chunk.css",
+  "js/1.a66fc717.chunk.js": "static/frontend/js/1.a66fc717.chunk.js",
+  "js/1.a66fc717.chunk.js.map": "static/frontend/js/1.a66fc717.chunk.js.map",
+  "runtime~main.js": "static/frontend/js/runtime~main.8454a502.js",
+  "runtime~main.js.map": "static/frontend/js/runtime~main.8454a502.js.map",
+  "media/rekit-react.png": "static/frontend/media/rekit-react.5c11e8db.png",
+  "css/main.97be736e.chunk.css.map": "static/frontend/css/main.97be736e.chunk.css.map",
+  "css/1.3e1e514d.chunk.css.map": "static/frontend/css/1.3e1e514d.chunk.css.map",
+  "../../templates/index.html": "static/frontend/../../templates/index.html",
+  "precache-manifest.129041e5f327367ec35922774f2b485d.js": "static/frontend/precache-manifest.129041e5f327367ec35922774f2b485d.js",
+  "service-worker.js": "static/frontend/service-worker.js"
+}

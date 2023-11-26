@@ -6,17 +6,19 @@ import {
   HOME_UPLOAD_FILE_FAILURE,
   HOME_UPLOAD_FILE_DISMISS_ERROR,
 } from './constants';
+import {message} from "antd";
 import Axios from 'axios';
 
-export function uploadFile(data, flag) {
+export function uploadFile(data, isConan) {
   return dispatch => {
     // optionally you can have getState as the second argument
     dispatch({
       type: HOME_UPLOAD_FILE_BEGIN,
     });
-
-    Axios.defaults.baseURL = 'http://localhost:8080/conan/file';
-    return Axios({
+    const uploadUrl = isConan?"/conan/file":"/spine/file"
+    // Axios.defaults.baseURL = 'https://diagpanel.azurewebsites.net';
+    Axios.defaults.baseURL = 'http://127.0.0.1:8080'
+    return Axios(uploadUrl,{
       method: 'post',
       data,
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -70,8 +72,8 @@ export function uploadFile(data, flag) {
         //   : {
         //       parsed_log_file_path: 'mntlogs\\2022-03-23\\test.csv',
         //       log_statistics: {
-        //         log_amount: 10000,
-        //         template_amount: 20,
+        //         total_log_size: 10000,
+        //         template_num: 20,
         //         log_template_mapping: {
         //           temp_1: 2000,
         //           temp_2: 500,
@@ -88,8 +90,9 @@ export function uploadFile(data, flag) {
         //         },
         //       },
         //     };
+        if(data.status !== 200) throw new Error();
         let beautifiedData;
-        if (flag) {
+        if (isConan) {
           beautifiedData = {
             list: data.data.data.map((d, index) => {
               let s = '';
@@ -105,22 +108,32 @@ export function uploadFile(data, flag) {
               };
             }),
           };
+        } else{
+          beautifiedData = {...data.data.data};
+          beautifiedData.log_sample_results = Object.values(beautifiedData.log_sample_results).map((result)=>{
+            return {
+              ...result,
+              Parameters:result.Parameters.join(", ")
+            }
+          })
         }
         dispatch({
           type: HOME_UPLOAD_FILE_SUCCESS,
           data: beautifiedData,
-          isConan: flag,
+          isConan,
         });
         //})
         // .catch(err => {
-        //   dispatch({
-        //       type: HOME_UPLOAD_FILE_FAILURE,
-        //       data: { error: err },
-        //     });
+
         // })
       })
       .catch(err => {
         console.log(err);
+            dispatch({
+              type: HOME_UPLOAD_FILE_FAILURE,
+              data: { error: err },
+            });
+            message.error("Failed to upload")
       });
   };
 }
@@ -191,6 +204,7 @@ export function reducer(state, action) {
             uploadFileError: null,
             isUploading: false,
             parsedData: action.data,
+            fileDownloadKey: action.data.parsed_log_file_path,
           };
 
     case HOME_UPLOAD_FILE_FAILURE:

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
-import { Upload, message, Button, Form, InputNumber, Divider } from 'antd';
+import { Upload, message, Button, Form, InputNumber, Divider, Select, Slider } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import '../../styles/SpineContent.less';
 
@@ -28,8 +28,14 @@ export class UploadComponent extends Component {
       patternLength: 5,
       patternLengthValidStatus: 'success',
       patternLengthErrorMsg: null,
+      state: null,
+      county: null,
+      fipsName: null,
+      climateChangeImpactCategories: null,
+      individualIncome: null,
     };
-    this.handleUpload = this.handleUpload.bind(this);
+    this.handleUploadCommunityResilence = this.handleUploadCommunityResilence.bind(this);
+    this.handleUploadCensusTractFilter = this.handleUploadCensusTractFilter.bind(this);
   }
 
   handleFileChange = ({ file, fileList }) => {
@@ -44,19 +50,24 @@ export class UploadComponent extends Component {
     });
   };
 
-  handleUpload() {
-    if (!this.state.fileList.length) {
-      message.warning('请选择要上传的文件');
-      return;
-    }
+  handleUploadCommunityResilence() {
+    const formData = {
+      state: this.state.state,
+      county: this.state.county,
+      fipsName: this.state.fipsName,
+    };
 
-    const formData = new FormData();
-    formData.append('file', this.state.fileList[0].originFileObj);
-    formData.append('iterationSteps', this.state.iterationSteps);
-    formData.append('patternNumber', this.state.patternNumber);
-    formData.append('patternLength', this.state.patternLength);
+    this.props.actions.getCommunityResilenceSearchResults(formData);
+  }
 
-    this.props.actions.uploadFile(formData, this.props.type === 'conan');
+  handleUploadCensusTractFilter() {
+    const formData = {
+      state: this.state.state,
+      county: this.state.county,
+      individualIncome: this.state.individualIncome,
+      climateChangeImpactCategories: this.state.climateChangeImpactCategories
+    };
+    this.props.actions.postCensusTractFilter(formData);
   }
 
   validatePatternNumber = number => {
@@ -136,81 +147,72 @@ export class UploadComponent extends Component {
     return (
       <div>
         <Form>
-          <Dragger
-            name="file"
-            multiple={false}
-            action=""
-            beforeUpload={(f, fList) => (fList.length > 1 ? true : false)}
-            onChange={this.handleFileChange}
-            accept=".csv, .xls, .xlsx"
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Click or drag file to this area to upload</p>
-            <p className="ant-upload-hint">
-              Supported file format: csv, excel. File size cannot exceed 50MB.
-            </p>
-          </Dragger>
           <Divider />
-          <Form.Item
-            {...formItemLayout}
-            label="Iteration Steps"
-            validateStatus={this.state.iterationStepsValidStatus}
-            help={this.state.iterationStepsErrorMsg}
-          >
-            <InputNumber
-              style={{ width: '50%' }}
-              min={500}
-              defaultValue={500}
-              step={50}
-              value={this.state.iterationSteps}
-              onChange={this.onIterationStepsChange}
-            />
+          <Form.Item {...formItemLayout} label="State" help={this.state.iterationStepsErrorMsg}>
+            <Select defaultValue="" style={{ width: '50%' }} options={this.props.home.searchFields.states} />
           </Form.Item>
           <Form.Item
             {...formItemLayout}
-            label="Max Pattern Number"
+            label="County"
             validateStatus={this.state.patternNumberValidStatus}
             help={this.state.patternNumberErrorMsg}
           >
-            <InputNumber
-              style={{ width: '50%' }}
-              min={1}
-              defaultValue={10}
-              value={this.state.patternNumber}
-              onChange={this.onPatternNumberChange}
-            />
+            <Select style={{ width: '50%' }} defaultValue="" options={this.props.home.searchFields.county} />
           </Form.Item>
-          <Form.Item
-            {...formItemLayout}
-            label="Max Pattern Length"
-            validateStatus={this.state.patternLengthValidStatus}
-            help={this.state.patternLengthErrorMsg}
-          >
-            <InputNumber
-              style={{ width: '50%' }}
-              min={1}
-              defaultValue={5}
-              value={this.state.patternLength}
-              onChange={this.onPatternLengthChange}
-            />
-          </Form.Item>
-          <Button
-            type="primary"
-            onClick={this.handleUpload}
-            disabled={
-              this.state.fileList.length !== 1 ||
-              this.state.iterationStepsValidStatus === 'error' ||
-              this.state.patternLengthValidStatus === 'error' ||
-              this.state.patternNumberValidStatus === 'error'
-            }
-            loading={this.props.home.isUploading}
-            size="large"
-            style={{ marginTop: 16, marginLeft: '47%' }}
-          >
-            {this.props.home.isUploading ? 'Uploading' : 'Start Upload'}
-          </Button>
+          {this.props.type === 'conan' ? (
+            <div>
+              <Form.Item
+                {...formItemLayout}
+                label="FIPS-Name"
+                validateStatus={this.state.patternLengthValidStatus}
+                help={this.state.patternLengthErrorMsg}
+              >
+                <Select style={{ width: '50%' }} defaultValue="" options={this.props.home.searchFields.fipsName} />
+              </Form.Item>
+              <Button
+                type="primary"
+                onClick={this.handleUploadCommunityResilence}
+                loading={this.props.home.isUploading}
+                size="large"
+                style={{ marginTop: 16, marginLeft: '47%' }}
+              >
+                {this.props.home.isUploading ? 'Uploading' : 'Submit'}
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Form.Item
+                {...formItemLayout}
+                label="Climate change impact categories"
+                help={this.state.patternNumberErrorMsg}
+              >
+                <Select
+                  style={{ width: '50%' }}
+                  defaultValue=""
+                  options={this.props.home.searchFields.climateChangeImpactCategories}
+                />
+              </Form.Item>
+              <Form.Item {...formItemLayout} help={this.state.patternNumberErrorMsg}>
+                <Slider
+                  min={0}
+                  max={50}
+                  onChange={r => {
+                    this.setState({ individualIncome: r.value });
+                  }}
+                  value={this.state.individualIncome}
+                />
+              </Form.Item>
+              <Button
+                type="primary"
+                onClick={this.handleUploadCensusTractFilter}
+                loading={this.props.home.isUploading}
+                size="large"
+                style={{ marginTop: 16, marginLeft: '47%' }}
+              >
+                {this.props.home.isUploading ? 'Uploading' : 'Submit'}
+              </Button>
+            </div>
+          )}
         </Form>
       </div>
     );
@@ -233,5 +235,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(UploadComponent);

@@ -456,10 +456,13 @@ module.exports = function(webpackEnv) {
       new HtmlWebpackPlugin(
         Object.assign(
           {},
-          {
+          isEnvProduction?{
             inject: true,
             template: paths.appHtml,
-            //filename: "../../templates/index.html"
+            filename: "../../templates/index.html"
+          }:{
+            inject: true,
+            template: paths.appHtml,
           },
           isEnvProduction
             ? {

@@ -1,7 +1,9 @@
-import { WelcomePage, SpineLayout, TemplateChart,ConanLayout } from './';
+import { WelcomePage, SpineLayout, TemplateChart, ConanLayout, CensusTractFilter } from './';
 
 export default {
   path: '',
-  childRoutes: [{ path: 'spine', component: SpineLayout,name:'spine', isIndex: true },
-  { path: 'conan', component: ConanLayout, name:'conan'}],
+  childRoutes: [
+  { path: 'climate_risk', component: ConanLayout, name:'conan'},
+  {path: 'census_tract_filter', component: CensusTractFilter, name:"CensusTractFilter"}
+  ],
 };

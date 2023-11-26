@@ -2,11 +2,17 @@ import initialState from './initialState';
 import { reducer as uploadFileReducer } from './uploadFile';
 import { reducer as switchHeaderReducer } from './switchHeader';
 import { reducer as resetUploadReducer } from './resetUpload';
+import { reducer as downloadFileReducer } from './downloadFile';
+import { reducer as getCommunityResilenceSearchResultsReducer } from './getCommunityResilenceSearchResults';
+import { reducer as postCensusTractFilterReducer } from './postCensusTractFilter';
 
 const reducers = [
   uploadFileReducer,
   switchHeaderReducer,
   resetUploadReducer,
+  downloadFileReducer,
+  getCommunityResilenceSearchResultsReducer,
+  postCensusTractFilterReducer,
 ];
 
 export default function reducer(state = initialState, action) {

@@ -6,3 +6,5 @@ export { default as TemplateChart } from './TemplateChart';
 export { default as ConanContent } from './ConanContent';
 export { default as HomeLayout } from './HomeLayout';
 export { default as ConanLayout } from './ConanLayout';
+export { default as CommunityResilence } from './CommunityResilence';
+export { default as CensusTractFilter } from './CensusTractFilter';

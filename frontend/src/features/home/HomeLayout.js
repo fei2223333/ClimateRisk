@@ -41,18 +41,23 @@ export class HomeLayout extends Component {
           <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
             <div className="logo" />
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-              <Menu.Item key="spine" icon={<PieChartOutlined />}>
-                <Link to="/spine">Spine</Link>
+              <Menu.Item key="climateRisk" icon={<PieChartOutlined />}>
+                <Link to="/climate_risk">Community Resilence Search Tool</Link>
               </Menu.Item>
-              <Menu.Item key="conan" icon={<DesktopOutlined />}>
-                <Link to="/conan">Conan</Link>
+              <Menu.Item key="censusTractFilter" icon={<DesktopOutlined />}>
+                <Link to="/census_tract_filter">Census Tract Filter</Link>
+              </Menu.Item>
+              <Menu.Item key="censusTractRank" icon={<DesktopOutlined />}>
+                <Link to="/census_tract_rank">Census Tract Rank</Link>
+              </Menu.Item>
+              <Menu.Item key="censusTractRankByState" icon={<DesktopOutlined />}>
+                <Link to="/census_tract_rank_by_state">Census Tract Rank by State</Link>
               </Menu.Item>
             </Menu>
           </Sider>
           <Layout className="site-layout">
             <Header className="site-layout-background" style={{ height: "60px" }}>
               <PageHeader
-                style={{height:"60px", padding: "10px 24px"}}
                 className="site-page-header"
                 title={title}
                 subTitle={subtitle}
@@ -61,7 +66,7 @@ export class HomeLayout extends Component {
             <Content style={{ margin: '0 16px' }}>
               {this.props.children}
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+            <Footer style={{ textAlign: 'center' }}>Upenn 5500</Footer>
           </Layout>
         </Layout>
       </div>

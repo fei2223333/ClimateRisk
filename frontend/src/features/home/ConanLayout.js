@@ -13,8 +13,8 @@ export class ConanLayout extends Component {
 
   componentDidMount() {
     this.props.actions.switchHeader({
-      title: 'Conan',
-      subtitle: 'Automatic Batch Failure Diagnosis',
+      title: 'Climate Risk',
+      subtitle: 'Community Resilence Search Tool',
     });
   }
 
@@ -26,7 +26,7 @@ export class ConanLayout extends Component {
     return (
       <div className="home-conan-layout">
         <UploadComponent type="conan"/>
-        <ConanContent data={this.props.home.conanData} />
+        <ConanContent data={this.props.home.communityResilenceSearchResults} />
       </div>
     );
   }
